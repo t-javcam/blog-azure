@@ -3,7 +3,7 @@ set :scm, :git
 set :repository, "git@github.com:t-javcam/blog-azure.git"
 set :branch, "master"
 
-server 168.62.4.220, :web, :app, :db, primary: true
+server "168.62.4.220", :web, :app, :db, primary: true
 
 set :deploy_to, "/home/#{user}/apps/#{application}"
 set :deploy_via, :remote_cache
