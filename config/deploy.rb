@@ -1,12 +1,14 @@
 set :application, "blog_app"
+set :user, "blogger"
 set :scm, :git
 set :repository, "git@github.com:t-javcam/blog-azure.git"
 set :branch, "master"
+set :use_sudo, true
 
 server "168.62.4.220", :web, :app, :db, primary: true
 
 set :deploy_to, "/home/#{user}/apps/#{application}"
-set :deploy_via, :remote_cache
+# set :deploy_via, :remote_cache
 
 default_run_options[:pty] = true
 ssh_options[:forward_agent] = true
@@ -22,9 +24,9 @@ namespace :deploy do
   task :setup_config, roles: :app do
     sudo "ln -nfs #{current_path}/config/nginx.conf /etc/nginx/sites-enabled/#{application}"
     sudo "ln -nfs #{current_path}/config/unicorn_init.sh /etc/init.d/unicorn_#{application}"
-    run "mkdir -p #{shared_path}/config"
-    put File.read("config/database.example.yml"), "#{shared_path}/config/database.yml"
-    puts "Now edit the config files in #{shared_path}."
+    sudo "mkdir -p #{shared_path}/config"
+    # put File.read("config/database.example.yml"), "#{shared_path}/config/database.yml"
+    # puts "Now edit the config files in #{shared_path}."
   end
   after "deploy:setup", "deploy:setup_config"
 
